@@ -1,0 +1,89 @@
+---
+title: "Lista 2 - Análise de Sobrevivência"
+author: "Augusto Cesar Nunes - 13/0103004"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+
+# Exercício 1
+
+## Item (a)
+$P(T > 1) = 1 - P(T < 1) = 1 - \int_0^1 2t*exp\{-t^2\}dt = 1 - (1 - exp\{-1\}) \approx 0,3679$
+
+## Item (b)
+$h(t) = \frac{f(t)}{S(t)} = \frac{2t*exp\{-t^2\}}{exp\{-t^2\}} \Rightarrow \lim_{t \rightarrow \infty} h(t) = \infty$
+
+# Exercício 2
+```{r dados.2, echo=FALSE}
+tempos.ex2 <- c(7, 34, 42, 63, 64, 74, 83, 84, 91, 108, 112, 129, 133, 133, 139, 140, 140, 146, 149, 154, 157, 160, 160, 165, 173, 176, 185, 218,  225, 241, 248, 273, 279, 297, 319 ,405, 417, 420, 440, 523, 523, 583, 594, 1101, 1116, 1146, 1226, 1349, 1412, 1417)
+censuras.ex2 <- c(rep(0,5), 1, rep(0,20), 1, rep(0,5), 1, 0, 1, rep(0,5), 1, rep(0,3), 1, 0, 1, 1, 1, 0)
+cbind(tempos.ex2, censuras.ex2)
+```
+
+## Item (a)
+```{r a.2}
+require(survival)
+KM.ex2 <-
+survfit(Surv(time = tempos.ex2, event = censuras.ex2) ~ 1, conf.int = F)
+NA.ex2 <-
+survfit(coxph(Surv(tempos.ex2, censuras.ex2) ~ 1, method = "breslow"))
+summary(KM.ex2)
+summary(NA.ex2)
+```
+
+## Item (b)
+```{r b.ex2}
+plot(
+KM.ex2,
+conf.int = FALSE,
+xlab = "Tempo",
+ylab = "S(t)",
+main = "Estimativa para S(t) \n Método de Kaplan-Meier"
+)
+plot(
+NA.ex2,
+conf.int = FALSE,
+xlab = "Tempo",
+ylab = "S(t)",
+main = "Estimativa para S(t) \n Método de Nelson-Aalen"
+)
+par(mfrow=c(1,2))
+plot(
+KM.ex2,
+conf.int = FALSE,
+xlab = "Tempo",
+ylab = "S(t)",
+main = "Estimativa para S(t) \n Método de Kaplan-Meier"
+)
+plot(
+NA.ex2,
+conf.int = FALSE,
+xlab = "Tempo",
+ylab = "S(t)",
+main = "Estimativa para S(t) \n Método de Nelson-Aalen"
+)
+par(mfrow = c(1,1))
+plot(
+KM.ex2,
+conf.int = FALSE,
+xlab = "Tempo",
+ylab = "S(t)",
+main = "Estimativas para S(t) \n "
+)
+lines(NA.ex2, col = 2, conf.int = F)
+legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
+
+plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Kaplan-Meier")
+plot(NA.ex2, conf.int = F, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Nelson-Aalen")
+
+
+plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t)")
+lines(NA.ex2, col =2, fun = "cumhaz", conf.int = F)
+legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
+```
+
+## Item (c)
+
+
