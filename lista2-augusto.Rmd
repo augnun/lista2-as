@@ -85,5 +85,12 @@ legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c
 ```
 
 ## Item (c)
+Considerando $t_F = 1417$, teríamos a mediana dos tempos em $t = 709$. Usando Interpolação Linear:
 
+$$\frac{709 - 523}{0,629 - 0,754} = \frac{\hat{t}_{MD} - 523}{0,5 - 0,724} \Rightarrow \hat{t}_{MD} \approx 856$$
 
+$$\frac{709 - 523}{0,644 - 0,761} = \frac{\hat{t}_{MD} - 523}{0,5 - 0,761} \Rightarrow \hat{t}_{MD} \approx 937$$
+
+## Item (d)
+
+1. $$
