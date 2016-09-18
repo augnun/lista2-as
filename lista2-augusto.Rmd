@@ -18,7 +18,7 @@ $h(t) = \frac{f(t)}{S(t)} = \frac{2t*exp\{-t^2\}}{exp\{-t^2\}} \Rightarrow \lim_
 # Exercício 2
 ```{r dados.2, echo=FALSE}
 tempos.ex2 <- c(7, 34, 42, 63, 64, 74, 83, 84, 91, 108, 112, 129, 133, 133, 139, 140, 140, 146, 149, 154, 157, 160, 160, 165, 173, 176, 185, 218,  225, 241, 248, 273, 279, 297, 319 ,405, 417, 420, 440, 523, 523, 583, 594, 1101, 1116, 1146, 1226, 1349, 1412, 1417)
-censuras.ex2 <- c(rep(0,5), 1, rep(0,20), 1, rep(0,5), 1, 0, 1, rep(0,5), 1, rep(0,3), 1, 0, 1, 1, 1, 0)
+censuras.ex2 <- c(rep(1,5), 0, rep(1,20), 0, rep(1,5), 0, 1, 0, rep(1,5), 0, rep(1,3), 0, 1, 0, 0, 0, 1)
 cbind(tempos.ex2, censuras.ex2)
 ```
 
@@ -35,35 +35,35 @@ summary(NA.ex2)
 
 ## Item (b)
 ```{r b.ex2}
-plot(
-KM.ex2,
-conf.int = FALSE,
-xlab = "Tempo",
-ylab = "S(t)",
-main = "Estimativa para S(t) \n Método de Kaplan-Meier"
-)
-plot(
-NA.ex2,
-conf.int = FALSE,
-xlab = "Tempo",
-ylab = "S(t)",
-main = "Estimativa para S(t) \n Método de Nelson-Aalen"
-)
-par(mfrow=c(1,2))
-plot(
-KM.ex2,
-conf.int = FALSE,
-xlab = "Tempo",
-ylab = "S(t)",
-main = "Estimativa para S(t) \n Método de Kaplan-Meier"
-)
-plot(
-NA.ex2,
-conf.int = FALSE,
-xlab = "Tempo",
-ylab = "S(t)",
-main = "Estimativa para S(t) \n Método de Nelson-Aalen"
-)
+# plot(
+# KM.ex2,
+# conf.int = FALSE,
+# xlab = "Tempo",
+# ylab = "S(t)",
+# main = "Estimativa para S(t) \n Método de Kaplan-Meier"
+# )
+# plot(
+# NA.ex2,
+# conf.int = FALSE,
+# xlab = "Tempo",
+# ylab = "S(t)",
+# main = "Estimativa para S(t) \n Método de Nelson-Aalen"
+# )
+# par(mfrow=c(1,2))
+# plot(
+# KM.ex2,
+# conf.int = FALSE,
+# xlab = "Tempo",
+# ylab = "S(t)",
+# main = "Estimativa para S(t) \n Método de Kaplan-Meier"
+# )
+# plot(
+# NA.ex2,
+# conf.int = FALSE,
+# xlab = "Tempo",
+# ylab = "S(t)",
+# main = "Estimativa para S(t) \n Método de Nelson-Aalen"
+# )
 par(mfrow = c(1,1))
 plot(
 KM.ex2,
@@ -75,8 +75,8 @@ main = "Estimativas para S(t) \n "
 lines(NA.ex2, col = 2, conf.int = F)
 legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
 
-plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Kaplan-Meier")
-plot(NA.ex2, conf.int = F, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Nelson-Aalen")
+# plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Kaplan-Meier")
+# plot(NA.ex2, conf.int = F, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Nelson-Aalen")
 
 
 plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t)")
@@ -85,12 +85,180 @@ legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c
 ```
 
 ## Item (c)
-Considerando $t_F = 1417$, teríamos a mediana dos tempos em $t = 709$. Usando Interpolação Linear:
+Usando Interpolação:
 
-$$\frac{709 - 523}{0,629 - 0,754} = \frac{\hat{t}_{MD} - 523}{0,5 - 0,724} \Rightarrow \hat{t}_{MD} \approx 856$$
+$$\frac{176-173}{0,491 - 0,511} = \frac{\hat{t}_{MD, K-M} - 173}{0,5 - 0,511} \Rightarrow \hat{t}_{MD, K-M} \approx 175 (174,65)$$
 
-$$\frac{709 - 523}{0,644 - 0,761} = \frac{\hat{t}_{MD} - 523}{0,5 - 0,761} \Rightarrow \hat{t}_{MD} \approx 937$$
+$$\frac{176-173}{0,4975 - 0,5178} = \frac{\hat{t}_{MD, N-A} - 173}{0,5 - 0,5178} \Rightarrow \hat{t}_{MD, N-A} \approx 175 (174,993)$$
 
 ## Item (d)
 
-1. $$
+1. $\frac{42 - 34}{0,940 - 0,960} = \frac{40 - 34}{\hat{S}(40)_{K-M} - 0,960} \Rightarrow \hat{S}(40)_{K-M} = 0,945$
+
+2. $\frac{108 - 91}{0,818 - 0,839} = \frac{100 - 91}{\hat{S}(100)_{K-M} - 0,839} \Rightarrow \hat{S}(100)_{K-M} = 0,827882$
+
+3. $\frac{405 - 294}{0,337 - 0,362} = \frac{300 - 294}{\hat{S}(300)_{K-M} - 0,362} \Rightarrow \hat{S}(300)_{K-M} = 0,360649$
+
+4. $\frac{1101 - 594}{0,161 - 0,187} = \frac{1000 - 594}{\hat{S(1000)}_{K-M} - 0,187} \Rightarrow \hat{S}(1000)_{K-M} = 0,166179$
+
+## Item (e)
+
+  O comportamento das estimativas para a função de sobrevivência tanto usando o Estimador de Kaplan-Meier quanto utilizando o de Nelson-Aalen sugerem que este não é um problema com fração de cura, já que a mesma _tende a zero_ com o passar do tempo.
+
+## Item (f)
+
+```{r f.ex2}
+curvaTTT <- function(tempo) {
+  G_rn <- numeric()
+  for (i in 1:length(tempo)) {
+    G_rn[i] <-
+      (sum(sort(tempo)[1:i]) + (length(tempo) - i) * sort(tempo)[i]) / (sum(tempo))
+  }
+  rn <- seq_along(tempo)/length(tempo)
+  plot(G_rn ~ rn,
+       main = "Curva TTT \n(Tempo Total em Teste)",
+       ylab = "G(r/n)",
+       xlab = "r/n")
+  abline(0,1)
+}
+
+curvaTTT(tempos.ex2)
+
+
+plot(tempos.ex2/sum(censuras.ex2),
+     ylab = "Risco Empírico",
+     xlab = "Tempo",
+     main = "H(t) Empírico")
+
+```
+
+
+O Gráfico da Curva TTT sugere uma distribuição paramétrica unimodal, como a Gama Generalizada, ou a Weibull Exponencializada (com $\gamma < 1$ e  $\gamma a > 1$).
+
+
+# Exercício 3
+```{r dados.ex3}
+tempos.g.ex3 <- c(28, 89, 175, 195, 309, 377, 393, 421, 447, 462, 709, 744, 770, 1106, 1206)
+tempos.p.ex3 <- c(34, 88, 137, 199, 280, 291, 299, 300, 309, 351,358, 369, 369, 370, 375, 382, 392, 429, 451, 1119)
+censuras.g.ex3 <- c(rep(1,5), rep(0,4), 1, rep(0,5))
+censuras.p.ex3 <- c(rep(1,6), rep(0,2), rep(1,9), 0, 1, 0)
+```
+
+## Item (a)
+```{r a.ex3}
+ex3 <- 
+  survfit(Surv(time = append(tempos.g.ex3, tempos.p.ex3), event = append(censuras.g.ex3, censuras.p.ex3)) ~ 1, conf.int = F)
+summary(ex3)
+plot(ex3, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Ambos os grupos - Método de Kaplan-Meier ")
+```
+
+* Este gráfico de sobrevivência sugere a presença de fração de cura na amostra. Há suspeita de que este comportamento pode ser explicado pela perda de informação ao agregarmos os dois grupos em um só, ou seja, pode ser um comportamento espúrio.
+
+
+## Item (b)
+```{r b.ex3}
+require(survival)
+g.ex3 <- 
+  survfit(Surv(time = tempos.g.ex3, event = censuras.g.ex3) ~ 1, conf.int = F)
+summary(g.ex3)
+
+p.ex3 <- 
+  survfit(Surv(time = tempos.p.ex3, event = censuras.p.ex3) ~ 1, conf.int = F)
+summary(p.ex3)
+
+plot(g.ex3, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Método de Kaplan-Meier ")
+lines(p.ex3, col = 2, conf.int = F)
+legend(850,0.85,lty=c(1,1),c("Tumor Grande","Tumor Pequeno"),bty="n",cex=0.8,col=c(1,2))
+
+```
+
+* Como citado na interpretação do item anterior, nota-se uma clara diferença entre as estimativas da função de sobrevivência entre os grupos "Tumor Grande" e "Tumor Pequeno": no primeiro temos a presença de fração de cura. 
+ 
+ * A razão entre as funções de sobrevivência (e consequentemente de risco) estimadas para os dois grupos não é (aproximadamente) proporcional, o que inviabiliza o uso do Teste de logRank para a igualdade das curvas de sobrevivência. O que de certa forma não é grande prejuízo já que, por inspeção, podemos considerar que as curvas são _suficientemente_ diferentes para que o teste não tenha tanta relevância prática.
+ 
+## Item (c)
+ 
+ 
+```{r c.ex3}
+grupo <- c(rep(1,15), rep(2,20))
+survdiff(Surv(time = append(tempos.g.ex3, tempos.p.ex3), event = append(censuras.g.ex3, censuras.p.ex3)) ~ grupo, rho = 0)
+
+survdiff(Surv(time = append(tempos.g.ex3, tempos.p.ex3), event = append(censuras.g.ex3, censuras.p.ex3)) ~ grupo, rho = 1)
+```
+
+* O Teste _log_Rank rejeita a hipótese nula (de igualdade entre as funções de sobrevivência) a um p-valor $\approx$ 0,02, ao contrário do Teste de Wilcoxon, que rejeita a igualdade com p-valor inferior, que não seria adequado caso considerássemos $\alpha = 0,05$ como critério.
+
+* O motivo desta discrepância é o achado citado no item anterior, a suposição de razão constante entre as funções de sobrevivência, exigida pelo Teste de _log_Rank, não é verificada.
+
+* O Teste de Wilcoxon é robusto à falta desta suposição, então __não rejeitamos a igualdade entre as funções de sobrevivência a um nível de significância de cerca de 9%__.
+
+## Item (d)
+```{r d.ex3}
+curvaTTT <- function(tempo) {
+  G_rn <- numeric()
+  for (i in 1:length(tempo)) {
+    G_rn[i] <-
+      (sum(sort(tempo)[1:i]) + (length(tempo) - i) * sort(tempo)[i]) / (sum(tempo))
+  }
+  rn <- seq_along(tempo)/length(tempo)
+  plot(G_rn ~ rn,
+       main = "Curva TTT \n(Tempo Total em Teste)",
+       ylab = "G(r/n)",
+       xlab = "r/n")
+  abline(0,1)
+}
+
+curvaTTT(append(tempos.g.ex3, tempos.p.ex3))
+
+
+plot(append(tempos.g.ex3, tempos.p.ex3)/sum(append(censuras.g.ex3, censuras.p.ex3)),
+     ylab = "Risco Empírico",
+     xlab = "Tempo",
+     main = "H(t) Empírico")
+```
+
+A Curva TTT indica que a função Taxa de Falha é monotonicamente crescente, ou seja, podemos utilizar a distribuição Weibull com $\gamma > 1$.
+
+# Exercício 4
+```{r ex4}
+tempos.1.ex4 <- c(140, 177, 50, 65, 86, 153, 181, 191, 77, 84, 87, 56, 66, 73, 119, 140, 200, 200,200,200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200)
+censuras.1.ex4 <- c(rep(1,15), rep(0,15))
+
+tempos.2.ex4 <- c(124, 58, 56, 68, 79, 89, 107, 86, 142, 110, 96, 142, 86, 75, 117, 98, 105, 126, 43, 46, 81, 433, 165, 170, 200, 200, 200, 200, 200, 200)
+censuras.2.ex4 <- c(rep(1,23), rep(0,7))
+
+tempos.3.ex4 <- c(112, 68, 84, 109, 153, 143, 60, 70, 98, 164, 63, 63, 77, 91, 91, 66, 70, 77, 63, 66, 66, 94, 101, 105, 108, 112, 115, 126, 161, 178)
+censuras.3.ex4 <- c(rep(1,30))
+```
+
+
+## Item (a)
+```{r a.ex4}
+ex4 <- survfit(Surv(time = append(tempos.1.ex4, tempos.2.ex4, tempos.3.ex4), event = append(censuras.1.ex4, censuras.2.ex4, censuras.3.ex4)) ~ 1, conf.int = F)
+summary(ex4)
+plot(ex4, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Todos os grupos - Método de Kaplan-Meier ")
+```
+
+O gráfico sugere a presença de fração de cura. Mas este efeito pode ser espúrio, explicado pela mesma razão do item 3.a: a perda de informação quando desconsideramos os grupos.
+
+# Item (b)
+```{r b.ex4}
+grupo <- c(rep(1,30), rep(2,30), rep(3,30))
+g1.ex4 <- 
+  survfit(Surv(time = tempos.1.ex4, event = censuras.1.ex4) ~ 1, conf.int = F)
+summary(g1.ex4)
+
+g2.ex4 <- 
+  survfit(Surv(time = tempos.2.ex4, event = censuras.2.ex4) ~ 1, conf.int = F)
+summary(g2.ex4)
+
+g3.ex4 <- 
+  survfit(Surv(time = tempos.3.ex4, event = censuras.3.ex4) ~ 1, conf.int = F)
+summary(g3.ex4)
+
+plot(g1.ex4, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Método de Kaplan-Meier ")
+lines(g2.ex4, col = 2, conf.int = F)
+lines(g3.ex4, col = 3, conf.int = F)
+legend(122,1,lty=c(1,1),c("Baixo Teor de Gordura","Saturada", "Não Saturada"),bty="n",cex=0.8,col=c(1,2, 3))
+```
+
