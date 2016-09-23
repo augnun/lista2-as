@@ -2,7 +2,9 @@
 title: "Lista 2 - Análise de Sobrevivência"
 author: "Augusto Cesar Nunes - 13/0103004"
 output:
-  pdf_document: default
+  pdf_document: 
+    fig_caption: yes
+    toc: yes
   html_notebook: default
 ---
 
@@ -19,11 +21,10 @@ $h(t) = \frac{f(t)}{S(t)} = \frac{2t*exp\{-t^2\}}{exp\{-t^2\}} \Rightarrow \lim_
 ```{r dados.2, echo=FALSE}
 tempos.ex2 <- c(7, 34, 42, 63, 64, 74, 83, 84, 91, 108, 112, 129, 133, 133, 139, 140, 140, 146, 149, 154, 157, 160, 160, 165, 173, 176, 185, 218,  225, 241, 248, 273, 279, 297, 319 ,405, 417, 420, 440, 523, 523, 583, 594, 1101, 1116, 1146, 1226, 1349, 1412, 1417)
 censuras.ex2 <- c(rep(1,5), 0, rep(1,20), 0, rep(1,5), 0, 1, 0, rep(1,5), 0, rep(1,3), 0, 1, 0, 0, 0, 1)
-cbind(tempos.ex2, censuras.ex2)
 ```
 
 ## Item (a)
-```{r a.2}
+```{r a.2, echo=F}
 require(survival)
 KM.ex2 <-
 survfit(Surv(time = tempos.ex2, event = censuras.ex2) ~ 1, conf.int = F)
@@ -70,18 +71,19 @@ KM.ex2,
 conf.int = FALSE,
 xlab = "Tempo",
 ylab = "S(t)",
-main = "Estimativas para S(t) \n "
+main = "Estimativas para S(t) \n ",
+mark.time = T
 )
-lines(NA.ex2, col = 2, conf.int = F)
-legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
+lines(NA.ex2, col = 2, conf.int = F, mark.time = T)
+legend(1000,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
 
 # plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Kaplan-Meier")
 # plot(NA.ex2, conf.int = F, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t) \n Método de Nelson-Aalen")
 
 
-plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t)")
-lines(NA.ex2, col =2, fun = "cumhaz", conf.int = F)
-legend(20,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
+plot(KM.ex2, fun = "cumhaz", xlab = "Tempo", ylab = "H(t)", main = "Estimativa para H(t)", mark.time = T)
+lines(NA.ex2, col =2, fun = "cumhaz", conf.int = F, mark.time = T)
+legend(1000,0.75,lty=c(1,1),c("Kaplan-Meier","Nelson-Aalen"),bty="n",cex=0.8,col=c(1,2))
 ```
 
 ## Item (c)
@@ -149,7 +151,7 @@ censuras.p.ex3 <- c(rep(1,6), rep(0,2), rep(1,9), 0, 1, 0)
 ex3 <- 
   survfit(Surv(time = append(tempos.g.ex3, tempos.p.ex3), event = append(censuras.g.ex3, censuras.p.ex3)) ~ 1, conf.int = F)
 summary(ex3)
-plot(ex3, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Ambos os grupos - Método de Kaplan-Meier ")
+plot(ex3, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Ambos os grupos - Método de Kaplan-Meier ", mark.time = T)
 ```
 
 * Este gráfico de sobrevivência sugere a presença de fração de cura na amostra. Há suspeita de que este comportamento pode ser explicado pela perda de informação ao agregarmos os dois grupos em um só, ou seja, pode ser um comportamento espúrio.
@@ -166,8 +168,8 @@ p.ex3 <-
   survfit(Surv(time = tempos.p.ex3, event = censuras.p.ex3) ~ 1, conf.int = F)
 summary(p.ex3)
 
-plot(g.ex3, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Método de Kaplan-Meier ")
-lines(p.ex3, col = 2, conf.int = F)
+plot(g.ex3, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Método de Kaplan-Meier ", mark.time = T)
+lines(p.ex3, col = 2, conf.int = F, mark.time = T)
 legend(850,0.85,lty=c(1,1),c("Tumor Grande","Tumor Pequeno"),bty="n",cex=0.8,col=c(1,2))
 
 ```
@@ -204,7 +206,10 @@ curvaTTT <- function(tempo) {
   plot(G_rn ~ rn,
        main = "Curva TTT \n(Tempo Total em Teste)",
        ylab = "G(r/n)",
-       xlab = "r/n")
+       xlab = "r/n",
+       xlim = c(0, 1),
+       ylim = c(0, max(rn))
+       )
   abline(0,1)
 }
 
@@ -236,12 +241,12 @@ censuras.3.ex4 <- c(rep(1,30))
 ```{r a.ex4}
 ex4 <- survfit(Surv(time = append(tempos.1.ex4, tempos.2.ex4, tempos.3.ex4), event = append(censuras.1.ex4, censuras.2.ex4, censuras.3.ex4)) ~ 1, conf.int = F)
 summary(ex4)
-plot(ex4, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Todos os grupos - Método de Kaplan-Meier ")
+plot(ex4, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Todos os grupos - Método de Kaplan-Meier ", mark.time = T)
 ```
 
 O gráfico sugere a presença de fração de cura. Mas este efeito pode ser espúrio, explicado pela mesma razão do item 3.a: a perda de informação quando desconsideramos os grupos.
 
-# Item (b)
+## Item (b)
 ```{r b.ex4}
 grupo <- c(rep(1,30), rep(2,30), rep(3,30))
 g1.ex4 <- 
@@ -256,9 +261,55 @@ g3.ex4 <-
   survfit(Surv(time = tempos.3.ex4, event = censuras.3.ex4) ~ 1, conf.int = F)
 summary(g3.ex4)
 
-plot(g1.ex4, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Método de Kaplan-Meier ")
-lines(g2.ex4, col = 2, conf.int = F)
-lines(g3.ex4, col = 3, conf.int = F)
+plot(g1.ex4, conf.int = FALSE, xlab = "Tempo", ylab = "S(t)", main = "Estimativa para S(t) \n Método de Kaplan-Meier ", mark.time = T)
+lines(g2.ex4, col = 2, conf.int = F, mark.time = T)
+lines(g3.ex4, col = 3, conf.int = F, mark.time = T)
 legend(122,1,lty=c(1,1),c("Baixo Teor de Gordura","Saturada", "Não Saturada"),bty="n",cex=0.8,col=c(1,2, 3))
 ```
 
+## Item (c)
+
+```{r c.ex4}
+grupos <- c(rep(1,30), rep(2,30), rep(3,30))
+survdiff(Surv(time = append(tempos.1.ex4, append(tempos.2.ex4, tempos.3.ex4)), event = append(censuras.1.ex4, append(censuras.2.ex4, censuras.3.ex4))) ~ grupos, rho = 0)
+
+survdiff(Surv(time = append(tempos.1.ex4, append(tempos.2.ex4, tempos.3.ex4)), event = append(censuras.1.ex4, append(censuras.2.ex4, censuras.3.ex4))) ~ grupo, rho = 1)
+```
+
+Como no item (c) da questão anterior, utilizamos aqui o Teste _log_Rank e o Teste de Wilcoxon, respectivamente. 
+
+O Teste _log_Rank supõe a razão entre as curvas de sobrevivência estimadas como constante, o que claramente não se verifica de acordo com o item (b). De qualquer maneira, este Teste rejeitou a hipótese de igualdade entre as curvas a um alto nível de significância, da ordem de $10^{-5}$.
+
+O Teste de Wilcoxon não necessita da suposição do Teste _log_Rank, então ele é perfeitamente aplicável à nossa situação. E de fato ele rejeita a hipótese nula também com nível de significância considerável, da ordem de $10^{-3}$. Aliás a significância deste teste é observada mesmo considerando a correção de Bonferroni para comparações múltiplas: já que estamos comparando três grupos, a um nível $\alpha_g = 0,05$ para as comparações dois-a-dois devemos ter um nível de significância $alpha_b \approx 0,0167$ para as comparações de três grupos.
+
+## Item (d)
+
+```{r d.ex4}
+curvaTTT(append(tempos.1.ex4, append(tempos.2.ex4, tempos.3.ex4)))
+
+
+plot(append(tempos.1.ex4, append(tempos.2.ex4, tempos.3.ex4))/sum(append(censuras.1.ex4, append(censuras.2.ex4, censuras.3.ex4))),
+     ylab = "Risco Empírico",
+     xlab = "Tempo",
+     main = "H(t) Empírico")
+```
+
+A Curva TTT sugere uma distribuição crescente para a função de risco, ou seja, podemos utilizar a Distribuição Weibull com $\gamma > 1$.
+
+# Exercício 5
+
+## Item (a)
+
+Entendo que o __Tratamento B__ deve ser o mais eficiente dos três, pois sua curva de sobrevivência decresce com certa regularidade a partir de $t \approx 30$. Como o evento de interesse aqui é a cura do paciente, isso indica que o Tratamento B cura pacientes a partir de um tempo inferior ao do Tratamento C, mesmo que este tenha um desempenho (o que pode ser chamado de eficiência?) relativamente maior em $t \approx 45$. 
+
+Entendo que esta seria uma conclusão um tanto _grosseira_, já que não leva em conta outros aspectos dos tratamentos em questão como seus custos, efeitos colaterais etc.
+
+É interessante também notar a inexistência de marcações de censura em ambas as curvas de sobrevivência.
+
+## Item (b)
+
+Difícil dizer sem verificar que a hipótese de igualdade entre ambas as curvas, e sem levar em consideração outros aspectos dos dois tratamentos em questão, já que ambos observam o mesmo valor em $t = 50$.
+
+## Item (c)
+
+Aqui o valor da função de sobrevivência do __Tratamento B__ é claramente superior, então supondo que pudéssemos estabelecer a diferença entre ambas as curvas, este é o tratamento mais razoável 
